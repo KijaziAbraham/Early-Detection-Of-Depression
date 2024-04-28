@@ -1,0 +1,138 @@
+<!-- registration.html -->
+{% extends 'main.html' %}
+
+{% block extend_head %}
+    <title>Registration</title>
+    <!-- Include SweetAlert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5">
+    <div class="row min-vh-100 align-items-center justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <h1 class="display-4 text-center p-3 text-primary">
+                Early Detection of Depression
+            </h1>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-center pb-2 fs-4">Create Your Account</h5>
+                    <p class="text-center small">Fill in the details below to register</p>
+
+                    <form class="row g-3 needs-validation" method="post" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Username -->
+                        <div class="col-sm-5">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" required>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-sm-5">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="example@gmail.com" required>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="col-sm-5">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" name="first_name" id="first_name" class="form-control" required>
+                        </div>
+
+                        <!-- Middle Name -->
+                        <div class="col-sm-5">
+                            <label for="middle_name" class="form-label">Middle Name(Optional)</label>
+                            <input type="text" name="middle_name" id="middle_name" class="form-control" >
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-sm-5">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" class="form-control" required>
+                        </div>
+
+                        <!-- License Number -->
+                        <div class="col-sm-5">
+                            <label for="license_number" class="form-label">License Number</label>
+                            <input type="text" name="license_number" id="license_number" class="form-control" placeholder="Eg. MCTER18999" required>
+                            {% if form.license_number.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.license_number.errors|first }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="col-sm-5">
+                            <label for="phone_number" class="form-label">Phone Number</label>
+                            <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Eg. +255628592577" required>
+                            {% if form.phone_number.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.phone_number.errors|first }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Qualification -->
+                        <div class="col-sm-5">
+                            <label for="qualification" class="form-label">Qualification</label>
+                            <select name="qualification" id="qualification" class="form-control" required>
+                                <option value="" selected disabled></option>
+                                <option value="clinical_officer">Clinical Officer</option>
+                                <option value="medical_doctor">Medical Doctor</option>
+                                <option value="other">Other</option>
+                            </select>
+                            {% if form.qualification.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.qualification.errors|first }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Password -->
+                        <div class="col-sm-5">
+                            <label for="password1" class="form-label">Password</label>
+                            <input type="password" name="password1" id="password1" class="form-control" required>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="col-sm-5">
+                            <label for="password2" class="form-label">Confirm Password</label>
+                            <input type="password" name="password2" id="password2" class="form-control" required>
+                            {% if form.password1.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.password1.errors|first }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Register Button -->
+                        <div class="col-12">
+                            <button class="btn btn-primary w-10" type="submit">Register</button>
+                        </div>
+
+                        <!-- Login Link -->
+                        <div class="col-12">
+                            <p class="small mb-0">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript code to trigger SweetAlert -->
+<script>
+    {% if form.errors %}
+        {% for field in form %}
+            {% if field.errors %}
+                swal("Error", "{{ field.label }}: {{ field.errors|join:", " }}", "error");
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+
+
+{% endblock %}

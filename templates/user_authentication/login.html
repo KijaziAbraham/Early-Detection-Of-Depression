@@ -1,0 +1,58 @@
+<!-- user_authentication/login.html -->
+{% extends 'main.html' %}
+
+{% block extend_head %}
+    <title>Login</title>
+    <!-- Include SweetAlert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5">
+    <div class="row min-vh-100 align-items-center justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <h1 class="display-4 text-center p-3 text-primary">
+                Early Detection of Depression
+            </h1>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-center pb-2 fs-4">Login to Your Account</h5>
+                    <p class="text-center small">Please Login by providing your username and Password. You must register first if you don't have an account</p>
+
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary w-10" type="submit">Login</button>
+                        </div>
+                        <div class="col-12">
+                            <p class="small mb-0">Don't have an account? <a href="{% url 'register' %}" class="btn-link">Create an account</a></p>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript code to trigger SweetAlert -->
+<script>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                swal("Error", "{{ message }}", "error");
+            {% elif message.tags == 'success' %}
+                swal("Success", "{{ message }}", "success");
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+{% endblock %}

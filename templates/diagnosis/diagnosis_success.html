@@ -1,0 +1,57 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block extend_head %}
+<title>Diagnosis Result</title>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="heading mb-3 text-center">Diagnosis Result</h1>
+                <div class="diagnosis-report">
+                    <div class="patient-details">
+                        <h2>Patient Details</h2>
+                        {% if patient %}
+                            <p><strong>Name:</strong> {{ patient.full_name }}</p>
+                            <p><strong>Age:</strong> {{ patient.age }}</p>
+                            <p><strong>Gender:</strong> {{ patient.sex }}</p>
+                            <p><strong>Address:</strong> {{ patient.address }}</p>
+                        {% else %}
+                            <p>No patient details available</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="diagnosis-result">
+                        <h2>Diagnosis Questionnaire Result</h2>
+                        <p><strong>Diagnosis Result:</strong> {{ patient.diagnosis_result }}</p>
+                        <!-- Add other diagnosis details here -->
+                    </div>
+                    
+                    <div class="image-classification">
+                        <h2>Image Classification Result</h2>
+                        {% if predicted_class_label %}
+                            <p><strong>Image Classification Result:</strong> {{ predicted_class_label }}</p>
+                        {% else %}
+                            <p>No classification result available</p>
+                        {% endif %}
+                    </div>
+                    
+                    {% comment %} <div class="phq9-responses">
+                        <h2>PHQ-9 Questionnaire Responses</h2>
+                        <ul>
+                            {% for response in patient.phq9response_set.all %}
+                                <li><strong>{{ response.question.question_text }}</strong>: {{ response.get_response_display }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

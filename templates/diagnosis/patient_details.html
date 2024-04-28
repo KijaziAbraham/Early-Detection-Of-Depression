@@ -1,0 +1,57 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block extend_head %}
+<title>Patient Details</title>
+        {% endblock %}
+
+        {%block content%}
+    <body>
+        <div class="modern-form">
+            <h3>Diagnosed Patient Form</h3>
+            <form method="post">
+                {% csrf_token %}
+                <!-- First Name Field -->
+                <div class="float-label-field">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                </div>
+                <!-- Middle Name Field -->
+                <div class="float-label-field">
+                    {{ form.middle_name.label_tag }}
+                    {{ form.middle_name }}
+                </div>
+                <!-- Last Name Field -->
+                <div class="float-label-field">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                </div>
+                <!-- Age Field -->
+                <div class="float-label-field">
+                    {{ form.age.label_tag }}
+                    {{ form.age }}
+                </div>
+                <!-- Address Field -->
+                <div class="float-label-field">
+                    {{ form.address.label_tag }}
+                    {{ form.address }}
+                </div>
+                <!-- Sex Field -->
+                <div class="float-label-field">
+                    <option value="" selected disabled></option>
+                    {{ form.sex.label_tag }}
+                    {{ form.sex }}
+                </div>
+                <!-- Submit Button -->
+                <div class="col-12">
+                    <button class="btn btn-primary w-10" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    
+        <!-- Link to jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+    {%endblock%}
+
+    

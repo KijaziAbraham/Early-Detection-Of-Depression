@@ -1,0 +1,81 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block extend_head %}
+<title>Webcam Capture</title>
+{% endblock %}
+
+</div>
+{% block content %}
+<section class="section">
+  <div class="container container-custom">
+    <div class="row align-items-center">
+      <div class="col-12">
+        <h1 class="heading mb-3">Webcam Capture</h1>
+        
+        <div class="video-container">
+          <video id="videoElement" controls autoplay style="width: 100%;"></video>
+        </div>
+        <div class="button-container mt-4">
+          <button id="captureButton" class="btn btn-primary btn-custom">Capture Image</button>
+          <a id="viewResultButton" class="btn btn-success btn-custom" style="display: none;" href="#">View Result</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/camera_capture.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    const video = document.getElementById('videoElement');
+    const captureButton = document.getElementById('captureButton');
+    const viewResultButton = document.getElementById('viewResultButton');
+
+    // Check if webcam access is supported
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Access the webcam stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error('Error accessing webcam:', error);
+            });
+    }
+
+    // Event listener for the capture button
+    captureButton.addEventListener('click', function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = canvas.toDataURL('image/jpeg');
+
+        // Send the captured image data to the server for classification
+        $.ajax({
+            url: '/classify_image/',
+            type: 'POST',
+            data: {
+                image: imageData,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                // If classification is successful, show the "View Result" button
+                if (response && response.predicted_class_label) {
+                    // Update the UI with the predicted class label
+                    viewResultButton.href = "/result/?label=" + response.predicted_class_label + "&patient_id=" + {{ patient.id }};
+                    viewResultButton.style.display = 'inline-block';
+                } else {
+                    console.error('Error in classification:', response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error in AJAX request:', error);
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

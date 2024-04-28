@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block extend_head %}
+<title>PH9 Questionnaire</title>
+{% endblock %}
+
+{% block content %}
+    <section class="section">
+        <div class="container container-custom">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <h1 class="heading mb-3">Patient Health Questionnaire (PHQ-9)</h1>
+                    <form action="{% url 'camera_capture' patient_id=patient.id %}" method="post">
+                        {% csrf_token %}
+                        
+                        {% for question in questions %}
+                            <div class="QuestionWrapper_question__rmyDd">
+                                <span>{{ question.question_text|safe }}</span>
+                                <div class="QuestionOptionsWrapper_options__pitGX">
+                                    <div class="RadioButton_radio-button___rTcZ">
+                                        <input type="radio" id="phq{{ question.id }}opt1" name="phq{{ question.id }}" value="0">
+                                        <label for="phq{{ question.id }}opt1">{{ question.option_1 }}</label>
+                                    </div>
+                                    <div class="RadioButton_radio-button___rTcZ">
+                                        <input type="radio" id="phq{{ question.id }}opt2" name="phq{{ question.id }}" value="1">
+                                        <label for="phq{{ question.id }}opt2">{{ question.option_2 }}</label>
+                                    </div>
+                                    <div class="RadioButton_radio-button___rTcZ">
+                                        <input type="radio" id="phq{{ question.id }}opt3" name="phq{{ question.id }}" value="2">
+                                        <label for="phq{{ question.id }}opt3">{{ question.option_3 }}</label>
+                                    </div>
+                                    <div class="RadioButton_radio-button___rTcZ">
+                                        <input type="radio" id="phq{{ question.id }}opt4" name="phq{{ question.id }}" value="3">
+                                        <label for="phq{{ question.id }}opt4">{{ question.option_4 }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button class="btn btn-primary w-10" type="submit">Submit</button>
+                    </form>
+                    
+                </div>
+                <div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
